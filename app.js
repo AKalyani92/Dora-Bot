@@ -190,6 +190,21 @@ bot.dialog('/OpenLots', [
             }
 
         });
+    },
+
+    function (session,results,next) {
+
+
+        getLotDetails(results.response.entity, function (objDetails) {
+            session.dialogData.poDetails = objDetails;
+            session.send("Following are the details of Lot");
+            session.send("Lot No : " + objDetails.Inslotno + "\n\nDescription : " + objDetails.desc + "\n\nSpecification: 3" + objDetails.spec);
+            session.dialogData.isDetailShown = true;
+
+        });
+
+        session.beginDialog('/ConversationEnd');
+
     }
 
 ]);
@@ -202,6 +217,28 @@ bot.dialog('/ConversationEnd',[
     }
 ]);
 
+
+function getLotDetails(poNumber,cb){
+
+    o().config({
+        endpoint: "http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_REC_INS_RESULT_SRV/",
+        username: 'TRAIN128_A21',
+        password: 'bcone@123',
+        isAsync:true
+    });
+    o("ES_INSMASTER?$filter=Inslotno eq '"+poNumber+"'&$expand=NAVMASTERDETAIL").get(function (data) {
+
+        session.send(JSON.stringify(data));
+        //same result like the first example on this page
+      var obj={};
+        obj.Inslotno=data.d.results[0].NAVMASTERDETAIL.results[0].Inslotno;
+        obj.desc=data.d.results[0].NAVMASTERDETAIL.results[0].Inschardesc;
+        obj.spec=data.d.results[0].NAVMASTERDETAIL.results[0].Insdesc;;
+
+        cb(obj);
+
+
+    }
 
 function getPODetails(poNumber,cb) {
 // user poData for further details
