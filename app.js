@@ -116,8 +116,8 @@ bot.dialog('/OpenPO', [
     function (session,results) {
         o().config({
             endpoint: 'http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_PO/',
-            username: 'TRAIN128_A21',
-            password: 'bcone@123',
+            username: 'S4H_MM',
+            password: 'alihana9',
             isAsync:true
         });
         o('POSet').get(function (data) {
@@ -164,8 +164,8 @@ bot.dialog('/OpenLots', [
     function (session,results) {
         o().config({
             endpoint: "http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_REC_INS_RESULT_SRV/",
-            username: 'TRAIN128_A21',
-            password: 'bcone@123',
+            username: 'S4H_MM',
+            password: 'alihana9',
             isAsync:true
         });
         o("ES_INSMASTER?$filter=Insplant eq '1710' and Instype eq '' and Inslotorg eq '01' and Insstartdate eq '15/02/2013' and Insenddate eq '31/08/2017'&$format=json").get(function (data) {
@@ -213,8 +213,8 @@ bot.dialog('/CreateLot', [
     function (session,results) {
         o().config({
             endpoint: 'http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_PO/',
-            username: 'TRAIN128_A21',
-            password: 'bcone@123',
+            username: 'S4H_MM',
+            password: 'alihana9',
             isAsync:true
         });
         o("POSet(PoNumber='4500000158')").patch({"Quantity" : "12"}).save(function (data) {
@@ -238,8 +238,8 @@ function getLotDetails(poNumber,cb) {
 
     o().config({
         endpoint: "http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_REC_INS_RESULT_SRV/",
-        username: 'TRAIN128_A21',
-        password: 'bcone@123',
+        username: 'S4H_MM',
+        password: 'alihana9',
         isAsync: true
     });
     o("ES_INSMASTER?$filter=Inslotno eq '" + poNumber + "'&$expand=NAVMASTERDETAIL").get(function (data) {
