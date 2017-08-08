@@ -152,12 +152,22 @@ bot.dialog('/OpenPO', [
             session.send("Following are the details of your purchase order");
             session.send("PO No : " + objDetails.PoNumber + "\n\nComp Code : " + objDetails.CompCode + "\n\nPo Unit: 3" + objDetails.PoUnit + "\n\nVendor : " + objDetails.Vendor + "\n\nQuantity   :  " + objDetails.Quantity);
             session.dialogData.isDetailShown = true;
-            builder.Prompts.text(session, "Do you want to update this?");
+
         });
 
+        session.beginDialog('/ConversationEnd');
 
     }
 ]);
+
+
+bot.dialog('/ConversationEnd',[
+    function (session) {
+        session.conversationData  = {};
+        builder.Prompts.text(session, 'I hope i have resolved your queries!\n\nIs there anything else i can help you with?');
+    }
+]);
+
 
 function getPODetails(poNumber,cb) {
 // user poData for further details
