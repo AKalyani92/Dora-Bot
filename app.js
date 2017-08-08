@@ -63,11 +63,11 @@ bot.dialog('/', [
         }
         else {
             // Changes suggested by rakhi for demo 04-05-2017
-           /* var data = {};
+            var data = {};
             data.response = results.response.entity;
 
             //session.send("HI");
-            RootMenu(session, data);*/
+            RootMenu(session, data);
             // End
 
             /*RootMenu(session,results);*/
@@ -120,9 +120,9 @@ bot.dialog('/OpenPO', [
         });
         o('POSet').get(function (data) {
 
-            session.send(JSON.stringify(data));
+          //  session.send(JSON.stringify(data));
             //same result like the first example on this page
-           /* console.log('service response :->    ' + JSON.stringify(data));
+            console.log('service response :->    ' + JSON.stringify(data));
             var result = data.d.results;
             poData = result;
             var poList = [];
@@ -130,7 +130,16 @@ bot.dialog('/OpenPO', [
             for (var i = 0, len = result.length; i < len && i<=5; i++) {
                 poList.push(result[i].PoNumber);
             }
-            cb(poList);*/
+
+            if (poList !== undefined) {
+                builder.Prompts.choice(session, "Please select a PO", poList,
+                    {
+                        listStyle: builder.ListStyle.button,
+                        maxRetries: 2,
+                        retryPrompt: 'Please provide PoNumber'
+                    });
+            }
+
         });
     }
     /*function (session, results) {
