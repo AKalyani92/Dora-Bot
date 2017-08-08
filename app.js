@@ -61,7 +61,7 @@ bot.dialog('/', [
             session.endDialog();
             session.replaceDialog('/');
         }
-        /*else {
+        else {
             // Changes suggested by rakhi for demo 04-05-2017
             var data = {};
             data.response = results.response.entity;
@@ -70,8 +70,8 @@ bot.dialog('/', [
             RootMenu(session, data);
             // End
 
-            /!*RootMenu(session,results);*!/
-        }*/
+            /*RootMenu(session,results);*/
+        }
     },
     function (session,results) {
        // session.send("HI");
