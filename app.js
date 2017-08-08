@@ -115,7 +115,7 @@ function RootMenu(session,results) {
 bot.dialog('/OpenPO', [
     function (session,results) {
         o().config({
-            endpoint: 'http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_PO/',
+            endpoint: 'http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_PO_SRV/',
             username: 'S4H_MM',
             password: 'alihana9',
             isAsync:true
@@ -212,7 +212,7 @@ bot.dialog('/OpenLots', [
 bot.dialog('/CreateLot', [
     function (session,results) {
         o().config({
-            endpoint: 'http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_PO/',
+            endpoint: 'http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_PO_SRV/',
             username: 'S4H_MM',
             password: 'alihana9',
             isAsync:true
