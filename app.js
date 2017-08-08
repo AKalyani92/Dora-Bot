@@ -193,21 +193,18 @@ bot.dialog('/OpenLots', [
     },
 
     function (session,results,next) {
-        session.send("Following are the details of Lot");
 
         getLotDetails(results.response.entity, function (objDetails) {
             session.dialogData.poDetails = objDetails;
             session.send("Following are the details of Lot");
             session.send("Lot No : " + objDetails.Inslotno + "\n\nDescription : " + objDetails.desc + "\n\nSpecification: 3" + objDetails.spec);
             session.dialogData.isDetailShown = true;
+            session.beginDialog('/ConversationEnd');
 
         });
 
 
 
-    },
-    function (session,results,next) {
-        session.beginDialog('/ConversationEnd');
     }
 
 ]);
