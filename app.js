@@ -149,7 +149,7 @@ bot.dialog('/OpenPO', [
 
                 var objDetails = {};
                 for (var i = 0, len = poData.length; i < len|| i<=5; i++) {
-                    if (poData[i].PoNumber === poNumber) {
+                    if (poData[i].PoNumber === results.response.entity) {
                         objDetails = poData[i];
                         break;
                     }
