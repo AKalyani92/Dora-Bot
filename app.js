@@ -4,6 +4,8 @@ var builder = require('botbuilder');
 var request = require('request');
 var o = require('odata');
 
+var poData = [];
+
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.PORT || 3000, function()
