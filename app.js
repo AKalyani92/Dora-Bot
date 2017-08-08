@@ -63,11 +63,11 @@ bot.dialog('/', [
         }
         else {
             // Changes suggested by rakhi for demo 04-05-2017
-            var data = {};
+           /* var data = {};
             data.response = results.response.entity;
 
             //session.send("HI");
-            RootMenu(session, data);
+            RootMenu(session, data);*/
             // End
 
             /*RootMenu(session,results);*/
