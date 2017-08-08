@@ -26,9 +26,13 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.84821427">
-              <caret line="169" column="0" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.60535717">
+              <caret line="178" column="3" selection-start-line="178" selection-start-column="3" selection-end-line="178" selection-end-column="3" />
+              <folding>
+                <element signature="e#3700#5365#0" expanded="false" />
+                <element signature="e#6012#6172#0" expanded="false" />
+                <element signature="n#!!block;n#getPODetails#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -181,9 +185,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.84821427">
-          <caret line="169" column="0" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.60535717">
+          <caret line="178" column="3" selection-start-line="178" selection-start-column="3" selection-end-line="178" selection-end-column="3" />
+          <folding>
+            <element signature="e#3700#5365#0" expanded="false" />
+            <element signature="e#6012#6172#0" expanded="false" />
+            <element signature="n#!!block;n#getPODetails#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

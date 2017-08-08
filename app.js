@@ -88,7 +88,7 @@ function RootMenu(session,results) {
         session.beginDialog('/OpenPO');
     }
     else if (results.response.toUpperCase().indexOf("VIEW OPEN LOTS") !== -1) {
-        session.beginDialog('/issues');
+        session.beginDialog('/OpenLots');
     }
    else if (results.response.toUpperCase().indexOf("CREATE LOT") !== -1) {
        session.beginDialog('/ClearData');
@@ -160,11 +160,29 @@ bot.dialog('/OpenPO', [
     }
 ]);
 
+bot.dialog('/OpenLots', [
+    function (session,results) {
+        o().config({
+            endpoint: "http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_REC_INS_RESULT_SRV/",
+            username: 'TRAIN128_A21',
+            password: 'bcone@123',
+            isAsync:true
+        });
+        o("ES_INSMASTER?$filter=Insplant eq '1710' and Instype eq '' and Inslotorg eq '01' and Insstartdate eq '15/02/2013' and Insenddate eq '15/07/2017'&$format=json").get(function (data) {
+
+              session.send(JSON.stringify(data));
+            //same result like the first example on this page
+
+        });
+    }
+
+]);
+
 
 bot.dialog('/ConversationEnd',[
     function (session) {
         session.conversationData  = {};
-        builder.Prompts.text(session, 'I hope i have resolved your queries!\n\nIs there anything else i can help you with?');
+        builder.Prompts.text(session, 'Is there anything else i can help you with?');
     }
 ]);
 
