@@ -203,8 +203,11 @@ bot.dialog('/OpenLots', [
 
         });
 
-        session.beginDialog('/ConversationEnd');
 
+
+    },
+    function (session,results,next) {
+        session.beginDialog('/ConversationEnd');
     }
 
 ]);
@@ -224,7 +227,7 @@ function getLotDetails(poNumber,cb) {
         endpoint: "http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_REC_INS_RESULT_SRV/",
         username: 'TRAIN128_A21',
         password: 'bcone@123',
-        isAsync: false
+        isAsync: true
     });
     o("ES_INSMASTER?$filter=Inslotno eq '" + poNumber + "'&$expand=NAVMASTERDETAIL").get(function (data) {
 
@@ -234,7 +237,7 @@ function getLotDetails(poNumber,cb) {
         obj.Inslotno = data.d.results[0].NAVMASTERDETAIL.results[0].Inslotno;
         obj.desc = data.d.results[0].NAVMASTERDETAIL.results[0].Inschardesc;
         obj.spec = data.d.results[0].NAVMASTERDETAIL.results[0].Insdesc;
-        ;
+
 
         cb(obj);
 
