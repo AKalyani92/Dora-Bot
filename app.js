@@ -168,7 +168,7 @@ bot.dialog('/OpenLots', [
             password: 'bcone@123',
             isAsync:true
         });
-        o("ES_INSMASTER?$filter=Insplant eq '1710' and Instype eq '' and Inslotorg eq '01' and Insstartdate eq '15/02/2013' and Insenddate eq '15/07/2017'&$format=json").get(function (data) {
+        o("ES_INSMASTER?$filter=Insplant eq '1710' and Instype eq '' and Inslotorg eq '01' and Insstartdate eq '15/02/2013' and Insenddate eq '31/08/2017'&$format=json").get(function (data) {
 
               session.send(JSON.stringify(data));
             //same result like the first example on this page
