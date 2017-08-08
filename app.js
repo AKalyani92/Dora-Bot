@@ -91,7 +91,7 @@ function RootMenu(session,results) {
         session.beginDialog('/OpenLots');
     }
    else if (results.response.toUpperCase().indexOf("CREATE LOT") !== -1) {
-       session.beginDialog('/ClearData');
+       session.beginDialog('/CreateLot');
    }
    else if (results.response.toUpperCase().indexOf("RESULT RECORDING") !== -1) {
        session.beginDialog('/ClearData');
@@ -115,7 +115,7 @@ function RootMenu(session,results) {
 bot.dialog('/OpenPO', [
     function (session,results) {
         o().config({
-            endpoint: 'http://34.197.250.246/sap/opu/odata/sap/ZINFA_PO_SRV/',
+            endpoint: 'http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_PO/',
             username: 'TRAIN128_A21',
             password: 'bcone@123',
             isAsync:true
@@ -207,6 +207,22 @@ bot.dialog('/OpenLots', [
 
     }
 
+]);
+
+bot.dialog('/CreateLot', [
+    function (session,results) {
+        o().config({
+            endpoint: 'http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_PO/',
+            username: 'TRAIN128_A21',
+            password: 'bcone@123',
+            isAsync:true
+        });
+        o("POSet(PoNumber='4500000158')").patch({"Quantity" : "12"}).save(function (data) {
+
+              session.send(JSON.stringify(data));
+
+        });
+    }
 ]);
 
 
