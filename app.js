@@ -30,7 +30,7 @@ bot.on('conversationUpdate', function (message) {
             console.log("not self");
             bot.send(new builder.Message()
                 .address(message.address)
-                .text('Hello!'));    // .text('Hello ' + membersAdded + "! How can i help you?"));
+                .text('Hello!' + membersAdded));    // .text('Hello ' + membersAdded + "! How can i help you?"));
             bot.beginDialog(message.address,'/');
         }
     }
