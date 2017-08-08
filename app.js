@@ -147,13 +147,13 @@ bot.dialog('/OpenPO', [
     function (session,results,next) {
 
 
-                var objDetails = {};
-                for (var i = 0, len = poData.length; i < len|| i<=5; i++) {
+                var objDetails = {"PoNumber":"4535"};
+                /*for (var i = 0, len = poData.length; i < len|| i<=5; i++) {
                     if (poData[i].PoNumber === results.response.entity) {
                         objDetails = poData[i];
                         break;
                     }
-                }
+                }*/
                 session.dialogData.poDetails = objDetails;
                 session.send("Following are the details of your purchase order");
                 session.send("PO No : " + objDetails.PoNumber + "\n\nComp Code : " + objDetails.CompCode + "\n\nPo Unit: 3" + objDetails.PoUnit + "\n\nVendor : " + objDetails.Vendor + "\n\nQuantity   :  " + objDetails.Quantity);
