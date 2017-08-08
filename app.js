@@ -30,11 +30,13 @@ bot.on('conversationUpdate', function (message) {
             console.log("not self");
             bot.send(new builder.Message()
                 .address(message.address)
-                .text('Welcome ' + membersAdded + "! How can i help you?"));
+                .text('Hello!'));    // .text('Hello ' + membersAdded + "! How can i help you?"));
             bot.beginDialog(message.address,'/');
         }
     }
 });
+
+
 
 Date.prototype.addDays = function(days) {
     this.setDate(this.getDate() + parseInt(days));
@@ -46,7 +48,7 @@ bot.dialog('/', [
     function (session,args, next) {
 
         // Changes suggested by rakhi for demo 04-05-2017
-        builder.Prompts.choice(session, "Please select an option below", "Payment Status|Inventory Information|Issues",
+        builder.Prompts.choice(session, "What would you like to do today?", "View Open PO|View Open Lots|Create Lot|Result Recording",
             {
                 listStyle: builder.ListStyle.button,
                 maxRetries: 2,
