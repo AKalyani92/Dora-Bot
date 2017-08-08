@@ -172,6 +172,22 @@ bot.dialog('/OpenLots', [
 
               session.send(JSON.stringify(data));
             //same result like the first example on this page
+            console.log('service response :->    ' + JSON.stringify(data));
+            var result = data.d.results;
+            var poList = [];
+
+            for (var i = 0, len = result.length; i < len && i<=5; i++) {
+                poList.push(result[i].Inslotno);
+            }
+
+            if (poList !== undefined) {
+                builder.Prompts.choice(session, "Please select a Lot to View details", poList,
+                    {
+                        listStyle: builder.ListStyle.button,
+                        maxRetries: 2,
+                        retryPrompt: 'Please provide Lot Number'
+                    });
+            }
 
         });
     }
