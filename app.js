@@ -170,7 +170,7 @@ bot.dialog('/OpenLots', [
         });
         o("ES_INSMASTER?$filter=Insplant eq '1710' and Instype eq '' and Inslotorg eq '01' and Insstartdate eq '15/02/2013' and Insenddate eq '31/08/2017'&$format=json").get(function (data) {
 
-              session.send(JSON.stringify(data));
+              //session.send(JSON.stringify(data));
             //same result like the first example on this page
             console.log('service response :->    ' + JSON.stringify(data));
             var result = data.d.results;
@@ -195,13 +195,13 @@ bot.dialog('/OpenLots', [
     function (session,results,next) {
         session.send("Following are the details of Lot");
 
-      /*  getLotDetails(results.response.entity, function (objDetails) {
+        getLotDetails(results.response.entity, function (objDetails) {
             session.dialogData.poDetails = objDetails;
             session.send("Following are the details of Lot");
             session.send("Lot No : " + objDetails.Inslotno + "\n\nDescription : " + objDetails.desc + "\n\nSpecification: 3" + objDetails.spec);
             session.dialogData.isDetailShown = true;
 
-        });*/
+        });
 
         session.beginDialog('/ConversationEnd');
 
