@@ -141,19 +141,23 @@ bot.dialog('/OpenPO', [
             }
 
         });
-    }
-    /*function (session, results) {
-        if (results.response == undefined) {
-            session.endDialog();
-            session.replaceDialog('/');
-        }
-        else {
-            session.send("Following are the details of your product");
-            session.send("Product : " + results.response.entity + "\n\nStock   : 120 Units \n\nWeekly rate of consumption   : 46 Units \n\nReorder Level : 50 ");
-            session.beginDialog('/ConversationEnd');
-        }
     },
-    function (session,results) {
-        session.endDialogWithResult(results);
-    }*/
+    function (session,results,next) {
+
+
+                var objDetails = {};
+                for (var i = 0, len = poData.length; i < len|| i<=5; i++) {
+                    if (poData[i].PoNumber === poNumber) {
+                        objDetails = poData[i];
+                        break;
+                    }
+                }
+                session.dialogData.poDetails = objDetails;
+                session.send("Following are the details of your purchase order");
+                session.send("PO No : " + objDetails.PoNumber + "\n\nComp Code : " + objDetails.CompCode + "\n\nPo Unit: 3" + objDetails.PoUnit + "\n\nVendor : " + objDetails.Vendor + "\n\nQuantity   :  " + objDetails.Quantity);
+                session.dialogData.isDetailShown = true;
+                builder.Prompts.text(session, "Do you want to update this?");
+
+
+    }
 ]);
