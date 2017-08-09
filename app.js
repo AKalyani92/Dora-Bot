@@ -5,6 +5,9 @@ var request = require('request');
 var o = require('odata');
 
 var poData = [];
+var csrf="";
+var allDataToPost;
+
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -94,7 +97,7 @@ function RootMenu(session,results) {
        session.beginDialog('/CreateLot');
    }
    else if (results.response.toUpperCase().indexOf("RESULT RECORDING") !== -1) {
-       session.beginDialog('/ClearData');
+       session.beginDialog('/ResultRecording');
    }
    else if (results.response.toUpperCase().indexOf("CLEAR") !== -1) {
         session.beginDialog('/ClearData');
@@ -211,18 +214,83 @@ bot.dialog('/OpenLots', [
 
 bot.dialog('/CreateLot', [
     function (session,results) {
-        o().config({
-            endpoint: 'http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_PO_SRV/',
-            username: 'S4H_MM',
-            password: 'alihana9',
-            isAsync:true
-        });
-        o("POSet(PoNumber='4500000158')").patch({"Quantity" : "12"}).save(function (data) {
 
-              session.send(JSON.stringify(data));
+        var username = 'S4H_MM';
+        var password = 'alihana9';
+        var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
 
+        var options = { method: 'GET',
+            url: 'http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_PO_SRV/POSet',
+            headers:
+            {   'content-type': 'application/json',
+                accept: 'application/json',
+                'Authorization':auth,
+                'x-csrf-token': 'Fetch' } };
+
+        request(options, function (error, response, body) {
+
+            /*session.send(JSON.stringify(response));
+            session.send(JSON.stringify(body));*/
+            csrf=response.headers['x-csrf-token'];
+            if (error) throw new Error(error);
+
+            console.log(body);
+            session.beginDialog('/ConversationEnd');
         });
+
     }
+]);
+
+bot.dialog('/ResultRecording', [
+    function (session,results) {
+
+        builder.Prompts.text(session, "Please provide lot Number and user decision separated by comma\n\n{1- Accepted, 0-Rejected}");
+
+    },
+    function (session,results) {
+
+       var res=(results.response).split(",");
+       var url = "http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_REC_INS_RESULT_SRV/ES_INSMASTER?$filter=Inslotno eq '"+res[0]+"'&$expand=NAVMASTERDETAIL";
+
+
+        var username = 'S4H_MM';
+        var password = 'alihana9';
+        var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
+
+        var options = { method: 'GET',
+            url: url,
+            headers:
+            {   'content-type': 'application/json',
+                accept: 'application/json',
+                'Authorization':auth,
+                'x-csrf-token': 'Fetch' } };
+
+        request(options, function (error, response, body) {
+            var allDataToPostold=JSON.parse(body);
+            allDataToPost=allDataToPostold.d.results[0];
+            allDataToPost.NAVMASTERDETAIL.results[0].Insresult=res[1];
+            if(res[1]==1){allDataToPost.NAVMASTERDETAIL.results[0].Insaccept="X";}
+            else{allDataToPost.NAVMASTERDETAIL.results[0].Insreject="X";}
+            /*session.send(JSON.stringify(body));*/
+            csrf=response.headers['x-csrf-token'];
+            if (error) throw new Error(error);
+            postUserInput();
+            session.send("Decision Recorded Successfully.")
+            console.log(body);
+            session.beginDialog('/ConversationEnd')
+
+
+        });
+
+
+
+    }/*,
+   function (session,results) {
+
+
+
+
+    }*/
 ]);
 
 
@@ -233,6 +301,38 @@ bot.dialog('/ConversationEnd',[
     }
 ]);
 
+
+function postUserInput(){
+
+    var username = 'S4H_MM';
+    var password = 'alihana9';
+    var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
+
+    var tempData=allDataToPost.NAVMASTERDETAIL.results;
+    allDataToPost.NAVMASTERDETAIL=tempData;
+
+    var options = { method: 'POST',
+        url: 'http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_REC_INS_RESULT_SRV/ES_INSMASTER',
+        headers:
+        {   authorization: auth,
+            accept: 'application/json',
+            'content-type': 'application/json',
+            'x-csrf-token': csrf+"" },
+        body:JSON.stringify(allDataToPost),
+        json: true };
+
+    request(options, function (error, response, body) {
+
+
+        console.log(response);
+        //session.beginDialog('/ConversationEnd');
+        if (error) throw new Error(error);
+
+        console.log(body);
+        //session.beginDialog('/ConversationEnd');
+    });
+
+}
 
 function getLotDetails(poNumber,cb) {
 
