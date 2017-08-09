@@ -213,14 +213,21 @@ bot.dialog('/OpenLots', [
 ]);
 
 bot.dialog('/CreateLot', [
+
+    function (session,results) {
+
+        builder.Prompts.text(session, "Please provide PO Number for GR and lot creation");
+
+    },
     function (session,results) {
 
         var username = 'S4H_MM';
         var password = 'alihana9';
         var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
 
+
         var options = { method: 'GET',
-            url: 'http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_PO_SRV/POSet',
+            url: "http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_PO_SRV/POSet('"+results.response+"')?$format=json",
             headers:
             {   'content-type': 'application/json',
                 accept: 'application/json',
@@ -229,8 +236,9 @@ bot.dialog('/CreateLot', [
 
         request(options, function (error, response, body) {
 
-            /*session.send(JSON.stringify(response));
-            session.send(JSON.stringify(body));*/
+
+            session.send("Lot created.. ");
+            //session.send(JSON.stringify(body));*/
             csrf=response.headers['x-csrf-token'];
             if (error) throw new Error(error);
 
@@ -249,13 +257,32 @@ bot.dialog('/ResultRecording', [
     },
     function (session,results) {
 
-       var res=(results.response).split(",");
-       var url = "http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_REC_INS_RESULT_SRV/ES_INSMASTER?$filter=Inslotno eq '"+res[0]+"'&$expand=NAVMASTERDETAIL";
-
-
+        csrf="";
         var username = 'S4H_MM';
         var password = 'alihana9';
         var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
+        var myUrl="http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_REC_INS_RESULT_SRV";
+        var options = { method: 'GET',
+            url: myUrl,
+            headers:
+            {   'content-type': 'application/json',
+                accept: 'application/json',
+                'Authorization':auth,
+                  'x-csrf-token': 'Fetch'
+            } };
+
+        request(options, function (error, response, body) {
+
+               csrf=response.headers['x-csrf-token'];
+            if (error) throw new Error(error);
+
+        });
+
+
+
+       var res=(results.response).split(",");
+       var url = "http://34.197.250.246/sap/opu/odata/sap/ZOD_QM_REC_INS_RESULT_SRV/ES_INSMASTER?$filter=Inslotno eq '"+res[0]+"'&$expand=NAVMASTERDETAIL";
+
 
         var options = { method: 'GET',
             url: url,
@@ -263,7 +290,8 @@ bot.dialog('/ResultRecording', [
             {   'content-type': 'application/json',
                 accept: 'application/json',
                 'Authorization':auth,
-                'x-csrf-token': 'Fetch' } };
+              //  'x-csrf-token': 'Fetch'
+            } };
 
         request(options, function (error, response, body) {
             var allDataToPostold=JSON.parse(body);
@@ -272,7 +300,7 @@ bot.dialog('/ResultRecording', [
             if(res[1]==1){allDataToPost.NAVMASTERDETAIL.results[0].Insaccept="X";}
             else{allDataToPost.NAVMASTERDETAIL.results[0].Insreject="X";}
             /*session.send(JSON.stringify(body));*/
-            csrf=response.headers['x-csrf-token'];
+        //    csrf=response.headers['x-csrf-token'];
             if (error) throw new Error(error);
             postUserInput();
             session.send("Decision Recorded Successfully.")
@@ -302,7 +330,7 @@ bot.dialog('/ConversationEnd',[
 ]);
 
 
-function postUserInput(){
+function postUserInput(newCSRF){
 
     var username = 'S4H_MM';
     var password = 'alihana9';
@@ -317,7 +345,7 @@ function postUserInput(){
         {   authorization: auth,
             accept: 'application/json',
             'content-type': 'application/json',
-            'x-csrf-token': csrf+"" },
+            'x-csrf-token': newCSRF },
         body:JSON.stringify(allDataToPost),
         json: true };
 
